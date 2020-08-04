@@ -1,0 +1,24 @@
+ {
+  "name": "salarmehr/ecma",
+  "description": "",
+  "type": "utility",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Reza Salarmehr",
+      "email": "salarmehr@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "ext-mbstring": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Salarmehr\\Ecma\\": "src/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8"
+  }
+}

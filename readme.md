@@ -1,4 +1,4 @@
-PHPEcma
+EcmaPHP
 ============
 PHP implementation of some fundamental JS classes 
 If you know JS, you don't need to learn a new API. You can use this package straght ahead. 

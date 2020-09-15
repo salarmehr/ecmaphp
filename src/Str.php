@@ -3,6 +3,7 @@
 namespace Salarmehr\Ecma;
 
 use ArrayAccess;
+use Exception;
 
 class Str implements ArrayAccess
 {
@@ -98,19 +99,36 @@ class Str implements ArrayAccess
     /**
      * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match
      * @param string $regex The pattern to search for, as a string.
-     * @return array|null
-     * @throws \Exception
+     * @return Arr|null
+     * @throws Exception
      */
     public function match(string $regex)
     {
-        $result= preg_match($regex, $this->value, $matches);
-        if($result === 0)
+        $result = preg_match($regex, $this->value, $matches);
+        if ($result === 0)
             return null;
-        if($result === 1)
-            return $matches;
+        if ($result === 1)
+            return new Arr($matches);
 
-        $errorMsg= array_flip(get_defined_constants(true)['pcre'])[preg_last_error()];
-        throw new \Exception($errorMsg,preg_last_error());
+        $errorMsg = array_flip(get_defined_constants(true)['pcre'])[preg_last_error()];
+        throw new Exception($errorMsg, preg_last_error());
+    }
+
+    /**
+     * if you need to have the output of `/g` flag, this function should be used
+     * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match
+     * @param string $regex The pattern to search for, as a string.
+     * @return Arr|null
+     * @throws Exception
+     */
+    public function matchAll(string $regex)
+    {
+        $result = preg_match_all($regex, $this->value, $matches);
+        if ($result === false) {
+            $errorMsg = array_flip(get_defined_constants(true)['pcre'])[preg_last_error()];
+            throw new Exception($errorMsg, preg_last_error());
+        }
+        return new Arr($matches[0]);
     }
 
     /**
@@ -175,24 +193,24 @@ class Str implements ArrayAccess
      * @param null   $limit
      * @return Arr
      */
-    public function split(string $separatorRegExp = '', $limit = null)
+    public function split(string $separatorRegExp = '//', $limit = -1)
     {
-        return new Arr(mb_split($this->value, $separatorRegExp, $limit));
+        return new Arr(preg_split($separatorRegExp, $this->value, $limit, PREG_SPLIT_NO_EMPTY));
     }
 
     public function trim($charlist = null)
     {
-        return new Str(trim($charlist));
+        return new self(trim($this->value, $charlist));
     }
 
     public function ltrim($charlist = null)
     {
-        return new Str(ltrim($charlist));
+        return new self(ltrim($this->value, $charlist));
     }
 
-    public function rtrim($charlist = null)
+    public function rtrim(string $charlist = null)
     {
-        return new Str(rtrim($charlist));
+        return new self(rtrim($this->value, $charlist));
     }
 
     public function toString()

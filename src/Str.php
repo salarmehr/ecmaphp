@@ -95,10 +95,23 @@ class Str implements ArrayAccess
         return $this->lastIndexOf($needle);
     }
 
+    /**
+     * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match
+     * @param string $regex The pattern to search for, as a string.
+     * @return array|null
+     * @throws \Exception
+     */
     public function match(string $regex)
     {
-        preg_match_all($regex, $this->value, $matches, PREG_PATTERN_ORDER);
-        return new Arr($matches[0]);    }
+        $result= preg_match($regex, $this->value, $matches);
+        if($result === 0)
+            return null;
+        if($result === 1)
+            return $matches;
+
+        $errorMsg= array_flip(get_defined_constants(true)['pcre'])[preg_last_error()];
+        throw new \Exception($errorMsg,preg_last_error());
+    }
 
     /**
      * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace

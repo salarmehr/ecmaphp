@@ -1,14 +1,14 @@
 EcmaPHP
 ============
-PHP implementation of some fundamental JS classes.  
-If you know JS, you don't need to learn a new API. The API of these classes are compatible with JS counterparts.  
+PHP implementation of some fundamental JS classes, which do not have a PHP counterpart.
+If you know JS, you don't need to learn a new API. The API of these classes are compatible with JS.  
 
 Requires PHP 7.2+ and the mbstring extension
 
 Classes
 ---------
-- String class as `Str`
-- Array class as `Arr`
+- [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) class as `Str`
+- [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) class as `Arr`
 
 Installation
 ============
